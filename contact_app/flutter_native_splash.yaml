@@ -1,0 +1,22 @@
+flutter_native_splash:
+
+
+  android: true
+  ios: true
+  web: true
+  
+
+  color: "#29384D"  ##====================================[REQUIRED]==========
+
+  image:                assets/images/route_logo.png
+
+  fullscreen: true                # default false
+  
+  # ANDROID 12+ configuration:
+  android_12:
+    # background color
+    color: "#29384D"
+    image: assets/images/route_logo_android12.png
+
+    # center-logo background color
+    # icon_background_color: "29384D"
