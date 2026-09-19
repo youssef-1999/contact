@@ -19,6 +19,18 @@ class _IntroScreenState extends State<IntroScreen> {
   bool isShowForm=false;
   final List<Contact> contacts = [];
 
+  void _deleteContact(Contact contact) {
+    setState(() {
+      contacts.remove(contact);
+    });
+  }
+
+  void _deleteAllContacts() {
+    setState(() {
+      contacts.clear();
+    });
+  }
+
   void _addContact(Contact contact) {
     setState(() {
       contacts.add(contact);
@@ -39,7 +51,7 @@ class _IntroScreenState extends State<IntroScreen> {
         child: isShowForm
             ? FormScreen(onSubmit: _addContact)
             : contacts.isNotEmpty
-            ? HomeScreen(contacts: contacts)
+            ? HomeScreen(contacts: contacts, onDelete: _deleteContact)
             : Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -56,14 +68,31 @@ class _IntroScreenState extends State<IntroScreen> {
                 ),
               ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primaryColor,
-        child: Icon(isShowForm ? Icons.close : Icons.add),
-        onPressed: () {
-          setState(() {
-            isShowForm = !isShowForm;
-          });
-        },
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (contacts.isNotEmpty && !isShowForm) ...[
+            FloatingActionButton(
+              heroTag: 'deleteAll',
+              backgroundColor: AppColors.redColor,
+              foregroundColor: Colors.white,
+              tooltip: 'Delete all',
+              onPressed: _deleteAllContacts,
+              child: const Icon(Icons.delete_sweep),
+            ),
+            const SizedBox(height: 16),
+          ],
+          FloatingActionButton(
+            heroTag: 'addContact',
+            backgroundColor: AppColors.primaryColor,
+            child: Icon(isShowForm ? Icons.close : Icons.add),
+            onPressed: () {
+              setState(() {
+                isShowForm = !isShowForm;
+              });
+            },
+          ),
+        ],
       ),
     );
   }
